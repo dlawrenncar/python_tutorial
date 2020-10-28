@@ -1,5 +1,6 @@
 # Initialize my data variable
-data =[]
+data =  {'date':[], 'time':[], 'tempout':[]}
+time = data['time']
 
 # Read the data fiel
 filename = "data/wxobs20180821.txt"
@@ -12,6 +13,10 @@ with open(filename, 'r') as datafile:
 
     # Read and parse the rest of the file
     for line in datafile:
-        datum = line.split()
-        data.append(datum)
+        split_line = line.split()
+        data['date'].append(split_line[0])
+        data['time'].append(split_line[1])
+        data['tempout'].append(split_line[2])
 
+# Debug
+print(data['time'])
