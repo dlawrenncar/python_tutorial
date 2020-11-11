@@ -1,8 +1,8 @@
 # Column naems and column indices to read
-columns = {'date':0, 'time':1, 'tempout':2}
+columns = {'date':0, 'time':1, 'tempout':2, 'windspeed':7}
 
 # Datatypes for each column
-types = {'tempout': float}
+types = {'tempout': float, 'windspeed':float}
 
 # Initialize my data variable
 data = {}
@@ -28,4 +28,4 @@ with open(filename, 'r') as datafile:
             data[column].append(value)
 
 # Debug
-print(data['tempout'])
+#print(data['tempout'])
