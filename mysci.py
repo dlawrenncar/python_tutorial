@@ -1,8 +1,8 @@
 # Column naems and column indices to read
-columns = {'date':0, 'time':1, 'tempout':2, 'windspeed':7}
+columns = {'date':0, 'time':1, 'tempout':2, 'windspeed':7, 'windchill':12}
 
 # Datatypes for each column
-types = {'tempout': float, 'windspeed':float}
+types = {'tempout': float, 'windspeed':float, 'windchill':float}
 
 # Initialize my data variable
 data = {}
@@ -45,4 +45,5 @@ for temp, windspeed in zip(data['tempout'],data['windspeed']):
 
 
 # DEBUG
-print(windchill)
+for windchill_data, windchill_comp in zip(data['windchill'],windchill):
+    print(f'{windchill_data:.5f} {windchill_comp:.5f} {windchill_data-windchill_comp:.5f}')
