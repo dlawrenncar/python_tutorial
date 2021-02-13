@@ -1,8 +1,8 @@
 # Column naems and column indices to read
-columns = {'date':0, 'time':1, 'tempout':2, 'windspeed':7, 'windchill':12}
+columns = {'date':0, 'time':1, 'tempout':2, 'humout':5, 'heatindex':13}
 
 # Datatypes for each column
-types = {'tempout': float, 'windspeed':float, 'windchill':float}
+types = {'tempout': float, 'humout':float, 'heatindex':float}
 
 # Initialize my data variable
 data = {}
@@ -27,31 +27,40 @@ with open(filename, 'r') as datafile:
             value = t(split_line[i])
             data[column].append(value)
 
-# Compute windchill temperature
-def compute_windchill(t, v):
-    a = 35.74
-    b = 0.6215
-    c = 35.75
-    d = 0.4275
-    
-    v16 = v**0.16
-    wci = a + (b*t) - (c * v16) + (d*t*v16)
-    return wci
+# Compute heatindex 
+def compute_heatindex(t, hum):
+    a = -42.379
+    b = 2.04901523
+    c = 10.14333127
+    d = 0.22475541
+    e = 0.00683783
+    f = 0.05481717
+    g = 0.00122874
+    h = 0.00085282
+    i = 0.00000199
 
-# Running function to compute windchill index
-windchill = []
-for temp, windspeed in zip(data['tempout'],data['windspeed']):
-    windchill.append(compute_windchill(temp, windspeed))
+    rh = hum / 100
+    hi = (a + (b * t) + (c * rh) + (d * t *rh) - (e * t ** 2) + 
+          (f * rh ** 2) + (g * rh * t ** 2) + (h * t * rh ** 2) +
+          (i * t ** 2 * rh ** 2))
+
+    return hi
+
+
+# Running function to compute heatindex
+heatindex = []
+for temp, humout in zip(data['tempout'],data['humout']):
+    heatindex.append(compute_heatindex(temp, humout))
 
 # Output comparison of data
-print(' Date    Time  Windchill Windchill Difference')
+print(' Date    Time  Heatindex Heatindex Difference')
 print('               original  compute')
 print('------- ------ --------- --------- ----------')
 
-zip_data = zip(data['date'], data['time'], data['windchill'], windchill)
-for date, time, wc_orig, wc_comp in zip_data:
-    wc_diff = wc_comp - wc_orig
-    print(f'{date} {time:>6} {wc_orig:9.3f} {wc_comp:9.3f} {wc_diff:10.3f}')
+zip_data = zip(data['date'], data['time'], data['heatindex'], heatindex)
+for date, time, hi_orig, hi_comp in zip_data:
+    hi_diff = hi_comp - hi_orig
+    print(f'{date} {time:>6} {hi_orig:9.3f} {hi_comp:9.3f} {hi_diff:10.3f}')
 
 # DEBUG
 #for windchill_data, windchill_comp in zip(data['windchill'],windchill):
