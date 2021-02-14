@@ -1,6 +1,6 @@
-from readdata import read_data
-from printdata import print_comparison
-from computation import compute_heatindex
+from mysci.readdata import read_data
+from mysci.printdata import print_comparison
+from mysci.computation import compute_heatindex
 
 # Column naems and column indices to read
 columns = {'date':0, 'time':1, 'tempout':2, 'humout':5, 'heatindex':13}
